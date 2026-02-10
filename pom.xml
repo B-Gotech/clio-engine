@@ -21,19 +21,63 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
 
 		<jackson.version>3.0.4</jackson.version>
 		<junit-jupiter.version>6.0.2</junit-jupiter.version>
 		<lombok.version>1.18.42</lombok.version>
+		<h2.version>2.2.224</h2.version>
+		<cloudevents.version>4.0.1</cloudevents.version>
 		<reactor-test.version>3.7.12</reactor-test.version>
 		<r2dbc-h2.version>1.0.1.RELEASE</r2dbc-h2.version>
-		<h2.version>2.2.224</h2.version>
 		<spring-boot.version>4.0.1</spring-boot.version>
+		<spring-cloud.version>2025.1.1</spring-cloud.version>
 	</properties>
+
+	<modules>
+		<module>clio-spring</module>
+		<module>clio-common</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-stream-binder-kafka</artifactId>
+				<version>5.0.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.lz4</groupId>
+						<artifactId>lz4-java</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-elasticsearch</artifactId>
+				<version>9.2.4</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
@@ -51,36 +95,22 @@
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>2.21</version>
+			</dependency>
 
 			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-webflux</artifactId>
-				<version>${spring-boot.version}</version>
+				<groupId>at.yawk.lz4</groupId>
+				<artifactId>lz4-java</artifactId>
+				<version>1.8.1</version>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-data-jpa</artifactId>
-				<version>${spring-boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-autoconfigure</artifactId>
-				<version>${spring-boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-data-r2dbc</artifactId>
-				<version>${spring-boot.version}</version>
-			</dependency>
+
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>r2dbc-postgresql</artifactId>
 				<version>1.0.8.RELEASE</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-elasticsearch</artifactId>
-				<version>9.2.4</version>
 			</dependency>
 
 			<dependency>
@@ -104,6 +134,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>io.cloudevents</groupId>
+				<artifactId>cloudevents-spring</artifactId>
+				<version>${cloudevents.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
 				<version>${spring-boot.version}</version>
@@ -111,9 +147,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<modules>
-		<module>clio-spring</module>
-		<module>clio-data-models</module>
-	</modules>
 </project>
