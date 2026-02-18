@@ -1,4 +1,4 @@
-package com.ccri.clio.common.io.interfaces;
+package com.ccri.clio.common.io.dispatch.interfaces;
 
 import reactor.core.publisher.Flux;
 
