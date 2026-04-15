@@ -1,6 +1,6 @@
 package clio.io.frames;
 
-import clio.io.utils.MpscFrameRecycler;
+import clio.io.impl.FrameManager;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import lombok.Setter;
@@ -13,7 +13,7 @@ public class ConsumerFrame extends AbstractFrame {
     private Object payload;
 
     public ConsumerFrame(long idHash, Consumer<Object> consumer, AtomicBoolean killSwitch,
-            MpscFrameRecycler recycler) {
+            FrameManager<Object, ConsumerFrame> recycler) {
         super(idHash, recycler);
         this.consumer = consumer;
         this.killSwitch = killSwitch;

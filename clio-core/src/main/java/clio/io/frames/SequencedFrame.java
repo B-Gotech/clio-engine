@@ -1,6 +1,7 @@
 package clio.io.frames;
 
-import clio.io.utils.MpscFrameRecycler;
+import clio.io.impl.FrameSequencer;
+import clio.io.impl.FrameManager;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class SequencedFrame extends AbstractFrame {
 
     public SequencedFrame(long idHash, int sequenceNumber,
             Object payload, Function<Object, Object> function, AtomicBoolean killSwitch, FrameSequencer<Object> sequencer,
-            MpscFrameRecycler recycler) {
+            FrameManager<Object, SequencedFrame> recycler) {
         super(idHash, recycler);
         this.killSwitch = killSwitch;
         this.sequencer = sequencer;

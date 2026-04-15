@@ -1,6 +1,7 @@
 package clio.io.test_utils;
 
 import clio.io.frames.AbstractFrame;
+import clio.io.impl.FrameManager;
 import java.util.concurrent.CountDownLatch;
 import lombok.Getter;
 import org.jctools.util.PaddedAtomicLong;
@@ -37,16 +38,23 @@ public class TestPublisher implements Publisher<AbstractFrame>, Subscription {
             return;
         }
 
+        FrameManager<Void, TestFrame> recycler = null;
+        long total = 0;
         for (int i = 0; i < demand && internalIter < myFrames.length; i++) {
             TestFrame f = myFrames[internalIter++];
-            f.trigger = trigger;
             f.countDown = countDown;
             subscriber.onNext(f);
+            total++;
+            recycler = f.getRecycler();
         }
+
+        countDown.addAndGet(-recycler.dump(total, TestFrame.PASSWORD));
+
         if (internalIter >= myFrames.length) {
             subscriber.onComplete();
             complete = true;
             subscriber = null;
+            trigger.countDown();
         }
     }
 
