@@ -5,6 +5,7 @@ import clio.io.AbstractExecutor;
 import clio.io.control_plane.CloneConfig;
 import clio.io.frames.AbstractFrame;
 import clio.io.interfaces.DispatchPreProcess;
+import clio.io.interfaces.PipelineExecutor;
 import clio.io.interfaces.SlotManager;
 import clio.io.utils.PinnedThreadExecutor;
 import org.openjdk.jmh.infra.Blackhole;
@@ -14,13 +15,13 @@ public class TestPipeline extends AbstractCloneablePipeline {
     private final String name;
 
     public TestPipeline(String name, CloneConfig config, DispatchPreProcess scheduler,
-            SlotManager slotManager, AbstractExecutor executor) {
+            SlotManager slotManager, PipelineExecutor executor) {
         super(name, config, scheduler, slotManager, executor);
         this.name = name;
     }
 
     @Override
-    public TestPipeline clone(CloneConfig cloneConfig) {
+    public TestPipeline hookOnClone(CloneConfig cloneConfig) {
         return new TestPipeline(name, cloneConfig, this.preProcess, this.slotManager,
                 this.executor);
     }
@@ -38,7 +39,9 @@ public class TestPipeline extends AbstractCloneablePipeline {
 
         @Override
         public void execute(AbstractFrame frame) {
-            bh.consume(frame);
+            if(bh != null) {
+                bh.consume(frame);
+            }
         }
 
         @Override

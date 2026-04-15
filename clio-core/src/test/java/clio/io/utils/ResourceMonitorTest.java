@@ -2,7 +2,8 @@ package clio.io.utils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import clio.io.utils.SystemUtilization.HardwareUtilization;
+import clio.io.resource_monitoring.ResourceMonitor;
+import clio.io.resource_monitoring.SystemUtilization.HardwareUtilization;
 import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import java.io.File;
 import java.time.Duration;

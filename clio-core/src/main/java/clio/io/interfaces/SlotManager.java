@@ -3,7 +3,7 @@ package clio.io.interfaces;
 import clio.io.control_plane.CloneConfig;
 import clio.io.utils.PinnedThreadExecutor;
 
-public interface SlotManager extends CloneableObject, AutoCloseable {
+public interface SlotManager extends CloneableObject {
 
     double getPressure();
 
