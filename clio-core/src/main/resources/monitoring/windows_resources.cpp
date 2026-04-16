@@ -35,7 +35,7 @@ Java_clio_io_resource_1monitoring_providers_WindowsResources_getCpuTimes(JNIEnv*
 
 // Returns percentage
 JNIEXPORT jdouble JNICALL
-Java_clio_io_resource_1monitoring_providers_WindowsResource_getCpuQuota(JNIEnv* env, jclass clazz) {
+Java_clio_io_resource_1monitoring_providers_WindowsResources_getCpuQuota(JNIEnv* env, jclass clazz) {
     BOOL inJob = FALSE;
     IsProcessInJob(GetCurrentProcess(), NULL, &inJob);
     if (!inJob) return -1.0;
@@ -50,7 +50,7 @@ Java_clio_io_resource_1monitoring_providers_WindowsResource_getCpuQuota(JNIEnv* 
 }
 
 JNIEXPORT jlong JNICALL
-Java_clio_io_resource_1monitoring_providers_WindowsResource_getAffinityMask(JNIEnv* env, jclass clazz) {
+Java_clio_io_resource_1monitoring_providers_WindowsResources_getAffinityMask(JNIEnv* env, jclass clazz) {
     DWORD_PTR processMask = 0;
     DWORD_PTR systemMask = 0;
     GetProcessAffinityMask(GetCurrentProcess(), &processMask, &systemMask);
@@ -59,7 +59,7 @@ Java_clio_io_resource_1monitoring_providers_WindowsResource_getAffinityMask(JNIE
 
 // Compute delta between samples for approximate cpu pressure
 JNIEXPORT jdoubleArray JNICALL
-Java_clio_io_resource_1monitoring_providers_WindowsResource_getPerCpuLoad(JNIEnv* env, jclass clazz) {
+Java_clio_io_resource_1monitoring_providers_WindowsResources_getPerCpuLoad(JNIEnv* env, jclass clazz) {
     DWORD cpuCount = GetActiveProcessorCount(ALL_PROCESSOR_GROUPS);
     ULONG bufferSize = cpuCount * sizeof(ULONG64); // Length in bytes
     std::vector<ULONG64> idleTimes(cpuCount);
@@ -79,7 +79,7 @@ Java_clio_io_resource_1monitoring_providers_WindowsResource_getPerCpuLoad(JNIEnv
 }
 
 JNIEXPORT jlongArray JNICALL
-Java_clio_io_resource_1monitoring_providers_WindowsResource_getMemorySnapshot(JNIEnv* env, jclass clazz) {
+Java_clio_io_resource_1monitoring_providers_WindowsResources_getMemorySnapshot(JNIEnv* env, jclass clazz) {
     jlong values[3] = {0, 0, 0}; // [Limit, Usage, Shared/File]
     HANDLE process = GetCurrentProcess();
 
@@ -119,7 +119,7 @@ Java_clio_io_resource_1monitoring_providers_WindowsResource_getMemorySnapshot(JN
 
 
 JNIEXPORT jlong JNICALL
-Java_clio_io_resource_1monitoring_providers_WindowsResource_getIoBytes(JNIEnv* env, jclass clazz) {
+Java_clio_io_resource_1monitoring_providers_WindowsResources_getIoBytes(JNIEnv* env, jclass clazz) {
     IO_COUNTERS io;
     if (GetProcessIoCounters(GetCurrentProcess(), &io)) {
         return (jlong)(io.ReadTransferCount + io.WriteTransferCount);
